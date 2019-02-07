@@ -11,12 +11,15 @@ class App extends Component {
     this.state = {
       contacts: this.getData() || [],
       error: null,
-      createModalShow: false
+      createModalShow: false,
+      sortField: 'name'
     };
 
     this.saveContact = this.saveContact.bind(this);
     this.showCreateModal = this.showCreateModal.bind(this);
     this.hideCreateModal = this.hideCreateModal.bind(this);
+    this.editContact = this.editContact.bind(this);
+    this.removeContact = this.removeContact.bind(this);
   }
 
 
@@ -27,6 +30,18 @@ class App extends Component {
     } catch {
       return false;
     }
+  }
+
+  sortData(data) {
+    const { sortField } = this.state,
+      sortedData = data.sort((a, b) => {
+        if (a[sortField] < b[sortField]) return -1;
+        if (a[sortField] > b[sortField]) return 1;
+        return 0;
+      });
+    console.log(sortField);
+    console.log(sortedData);
+    return sortedData;
   }
 
   getData() {
@@ -47,12 +62,22 @@ class App extends Component {
   saveContact(contact) {
     let contacts = this.state.contacts;
     contacts.push(contact);
+    const sortedContacts = this.sortData(contacts);
     console.log(contacts);
-    this.setData(contacts);
+    console.log(sortedContacts);
+    this.setData(sortedContacts);
     this.setState({
       createModalShow: false,
-      contacts: contacts
+      contacts: sortedContacts
     });
+  }
+
+  editContact() {
+
+  }
+
+  removeContact() {
+
   }
 
   showCreateModal() {
@@ -79,7 +104,12 @@ class App extends Component {
           <button onClick={this.showCreateModal}>New contact</button>
           {createModalShow && <ModalCreate onSave={this.saveContact} onCancel={this.hideCreateModal}/>}
         </div>
-        {contacts.length !==0 && <ContactsList contacts={ contacts }/>}
+        {contacts.length !==0 &&
+            <ContactsList
+              contacts={ contacts }
+              onEdit={this.editContact}
+              onRemove={this.removeContact}
+        />}
       </div>
     );
   }

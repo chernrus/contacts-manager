@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
+import EditPanel from './EditPanel';
 
 class Contact extends Component {
 
   render() {
 
-    const { contact } = this.props;
+    const { contact, id } = this.props;
 
     return (
-      <div className="contact-list__contact">
-      </div>
+      <tr>
+        <td>{contact.name}</td>
+        <td>{contact.phone}</td>
+        <td>{contact.email}</td>
+        <td>{contact.description}</td>
+        <td><EditPanel contact={ contact }/></td>
+      </tr>
     );
   }
 }
