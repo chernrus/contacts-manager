@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import ModalCreate from './ModalCreate';
 import ContactsList from './ContactsList';
+import Filter from './Filter';
 
 class App extends Component {
 
@@ -14,7 +15,8 @@ class App extends Component {
       contacts: this.getData() || [],
       error: null,
       createModalShow: false,
-      sortField: 'name'
+      sortField: 'name',
+      filter: ''
     };
 
     this.saveContact = this.saveContact.bind(this);
@@ -22,6 +24,7 @@ class App extends Component {
     this.hideCreateModal = this.hideCreateModal.bind(this);
     this.editContact = this.editContact.bind(this);
     this.removeContact = this.removeContact.bind(this);
+    this.onFilterChange = this.onFilterChange.bind(this);
   }
 
 
@@ -44,6 +47,13 @@ class App extends Component {
     console.log(sortField);
     console.log(sortedData);
     return sortedData;
+  }
+
+  onFilterChange(filterString) {
+    this.setState({
+      filter: filterString,
+      offset: 0
+    });
   }
 
   getData() {
@@ -113,22 +123,26 @@ class App extends Component {
   render() {
     console.log('Start');
     const {
-      contacts,
-      error,
-      createModalShow
-    } = this.state;
+        contacts,
+        error,
+        createModalShow
+      } = this.state,
+      filteredContacts = contacts.filter(dataItem => {
+        return Object.values(dataItem).toString().toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1;
+      });
+
 
     return (
       <div className="App">
         <h1>Contacts Manager</h1>
-
+        <Filter onFilterChange={this.onFilterChange} />
         <div className="contact-creator">
           <button onClick={this.showCreateModal}>New contact</button>
           {createModalShow && <ModalCreate onSave={this.saveContact} onCancel={this.hideCreateModal}/>}
         </div>
-        {contacts.length !==0 &&
+        {filteredContacts.length !==0 &&
             <ContactsList
-              contacts={ contacts }
+              contacts={ filteredContacts }
               onEdit={this.editContact}
               onRemove={this.removeContact}
         />}
