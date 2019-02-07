@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
+import uuidv4 from 'uuid/v4';
 
 class ModalCreate extends Component {
   constructor() {
     super();
 
     this.state = {
-      isEmpty: true
+      isEmpty: true,
+      name: '',
+      phone: '',
+      email: '',
+      description: ''
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -17,8 +22,6 @@ class ModalCreate extends Component {
   checkFormData() {
     const modal = ReactDOM.findDOMNode(this),
       inputsColection = modal.querySelectorAll('.modal-input');
-
-    let isEmpty = true;
 
     for(var i = 0; i < inputsColection.length; i++) {
       if(inputsColection[i].value.length !==0) return false;
@@ -59,6 +62,7 @@ class ModalCreate extends Component {
       phone: phone || '',
       email: email || '',
       description: description || '',
+      id: uuidv4()
     });
   }
 

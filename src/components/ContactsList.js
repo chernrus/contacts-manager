@@ -4,8 +4,6 @@ import Contact from './Contact';
 class ContactsList extends Component {
 
   createThead(contact) {
-    console.log(contact);
-
     return (
       <thead>
         <tr>
@@ -25,7 +23,12 @@ class ContactsList extends Component {
 
     contacts.forEach((item, i) => {
       trows.push(
-        <Contact key={i} contact={item} id={i} />
+        <Contact
+          key={i}
+          contact={item}
+          id={i}
+          onEdit={this.props.onEdit}
+          onRemove={this.props.onRemove}/>
       )
     });
 

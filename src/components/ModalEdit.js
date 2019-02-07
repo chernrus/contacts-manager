@@ -10,19 +10,18 @@ class ModalEdit extends Component {
       name: props.contact.name,
       phone: props.contact.phone,
       email: props.contact.email,
-      description: props.contact.description
+      description: props.contact.description,
+      id: props.contact.id
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.cancel = this.cancel.bind(this);
-    this.save = this.save.bind(this);
+    this.edit = this.edit.bind(this);
   }
   //
   checkFormData() {
     const modal = ReactDOM.findDOMNode(this),
       inputsColection = modal.querySelectorAll('.modal-input');
-
-    let isEmpty = true;
 
     for(var i = 0; i < inputsColection.length; i++) {
       if(inputsColection[i].value.length !==0) return false;
@@ -48,26 +47,28 @@ class ModalEdit extends Component {
     onCancel();
   }
 
-  save() {
-    const { onSave } = this.props,
+  edit() {
+    const { onEdit } = this.props,
       {
         name,
         phone,
         email,
         description,
+        id
       } = this.state;
 
-    onSave({
+    console.log(this);
+    onEdit({
       name: name || '',
       phone: phone || '',
       email: email || '',
       description: description || '',
+      id: id
     });
   }
 
   render() {
     const { isEmpty } = this.state;
-    const { contact } = this.props;
 
     return (
       <div className="modal modal-edit">
@@ -110,7 +111,7 @@ class ModalEdit extends Component {
             </label>
             <div className="modal-content__confirm-buttons">
               <button type="button" onClick={this.cancel}>Cancel</button>
-              <button type="button" disabled={isEmpty} onClick={this.save}>Save</button>
+              <button type="button" disabled={isEmpty} onClick={this.edit}>Edit</button>
             </div>
           </form>
         </div>

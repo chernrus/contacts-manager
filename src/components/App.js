@@ -1,3 +1,5 @@
+// http://www.filltext.com/?rows=10&name={firstName}~{lastName}&phone={phone|format}&id={number|1000}}&email={email}&description={lorem|6}&pretty=true
+
 import React, { Component } from 'react';
 import '../App.css';
 import ModalCreate from './ModalCreate';
@@ -56,15 +58,16 @@ class App extends Component {
 
   setData(contacts) {
     console.log(contacts);
+    console.log(contacts);
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }
 
   saveContact(contact) {
     let contacts = this.state.contacts;
     contacts.push(contact);
+
     const sortedContacts = this.sortData(contacts);
-    console.log(contacts);
-    console.log(sortedContacts);
+
     this.setData(sortedContacts);
     this.setState({
       createModalShow: false,
@@ -72,12 +75,31 @@ class App extends Component {
     });
   }
 
-  editContact() {
+  editContact(contact) {
+    console.log(contact);
 
+    let contacts = this.state.contacts,
+      foundIndex = contacts.findIndex(x => x.id === contact.id);
+
+    contacts[foundIndex] = contact;
+
+    const sortedContacts = this.sortData(contacts);
+    this.setData(sortedContacts);
+    this.setState({
+      contacts: sortedContacts
+    });
   }
 
-  removeContact() {
+  removeContact(id) {
+    let contacts = this.state.contacts,
+      foundIndex = contacts.findIndex(x => x.id === id);
 
+    contacts.splice(foundIndex, 1)
+
+    this.setData(contacts);
+    this.setState({
+      contacts: contacts
+    });
   }
 
   showCreateModal() {

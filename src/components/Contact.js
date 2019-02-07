@@ -5,7 +5,7 @@ class Contact extends Component {
 
   render() {
 
-    const { contact, id } = this.props;
+    const { contact } = this.props;
 
     return (
       <tr>
@@ -13,7 +13,12 @@ class Contact extends Component {
         <td>{contact.phone}</td>
         <td>{contact.email}</td>
         <td>{contact.description}</td>
-        <td><EditPanel contact={ contact }/></td>
+        <td>
+          <EditPanel
+            contact={ contact }
+            onEdit={this.props.onEdit}
+            onRemove={this.props.onRemove}/>
+        </td>
       </tr>
     );
   }
