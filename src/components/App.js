@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import '../styles/App.css';
+import '../styles/Modal.css';
 import ModalCreate from './ModalCreate';
 import ContactsList from './ContactsList';
 import Filter from './Filter';
-
-// generate test data link http://www.filltext.com/?rows=10&name={firstName}~{lastName}&phone={phone|format}&id={number|1000}}&email={email}&description={lorem|6}&pretty=true
+import ErrorMessage from './ErrorMessage';
+import Loader from './Loader';
 
 class App extends Component {
 
@@ -15,6 +15,7 @@ class App extends Component {
       contacts: this.getData() || [],
       createModalShow: false,
       sortField: 'name',
+      error: null,
       filter: ''
     };
 
@@ -24,8 +25,19 @@ class App extends Component {
     this.editContact = this.editContact.bind(this);
     this.removeContact = this.removeContact.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
+    this.onError = this.onError.bind(this);
+    this.onLoad = this.onLoad.bind(this);
   }
 
+  onLoad(data) {
+    const sortedData = this.sortData(data);
+    this.setData(sortedData);
+    this.setState({contacts: sortedData, error: null});
+  }
+
+  onError(error) {
+    this.setState({error: error});
+  }
 
   isValidJSON(text) {
     try {
@@ -107,9 +119,7 @@ class App extends Component {
   }
 
   showCreateModal(event) {
-    // event.preventDefault();
     this.setState({createModalShow: true});
-
   }
 
   hideCreateModal(event) {
@@ -121,7 +131,8 @@ class App extends Component {
   render() {
     const {
         contacts,
-        createModalShow
+        createModalShow,
+        error
       } = this.state,
       filteredContacts = contacts.filter(dataItem => {
         return Object.values(dataItem).toString().toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1;
@@ -136,6 +147,7 @@ class App extends Component {
             {createModalShow && <ModalCreate onSave={this.saveContact} onCancel={this.hideCreateModal}/>}
           </div>
           <Filter onFilterChange={this.onFilterChange} />
+          {error && <ErrorMessage error={error}/>}
         </div>
         {filteredContacts.length !==0 &&
             <ContactsList
@@ -143,6 +155,7 @@ class App extends Component {
               onEdit={this.editContact}
               onRemove={this.removeContact}
         />}
+        {filteredContacts.length === 0 && <Loader onLoad={this.onLoad} onError={this.onError}/>}
       </div>
     );
   }

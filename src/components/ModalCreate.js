@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../styles/Modal.css';
 import ReactDOM from "react-dom";
 import uuidv4 from 'uuid/v4';
 

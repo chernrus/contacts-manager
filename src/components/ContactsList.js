@@ -5,7 +5,7 @@ class ContactsList extends Component {
 
   createThead(contact) {
     return (
-      <thead>
+      <thead className="fixed_header">
         <tr>
           <th>Name</th>
           <th>Phone</th>
