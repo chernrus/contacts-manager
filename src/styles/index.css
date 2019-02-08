@@ -116,6 +116,13 @@ th,
 td {
   text-align: left;
 }
+.table-cell {
+  max-width: 200px;
+  min-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 th {
   font-size: 18px;

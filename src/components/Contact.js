@@ -9,10 +9,10 @@ class Contact extends Component {
 
     return (
       <tr>
-        <td>{contact.name}</td>
-        <td>{contact.phone}</td>
-        <td>{contact.email}</td>
-        <td>{contact.description}</td>
+        <td className="table-cell">{contact.name}</td>
+        <td className="table-cell">{contact.phone}</td>
+        <td className="table-cell">{contact.email}</td>
+        <td className="table-cell">{contact.description}</td>
         <td>
           <EditPanel
             contact={ contact }
