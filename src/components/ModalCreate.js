@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../styles/Modal.css';
 import ReactDOM from "react-dom";
 import uuidv4 from 'uuid/v4';
 
@@ -42,12 +43,13 @@ class ModalCreate extends Component {
     });
   }
 
-  cancel() {
+  cancel(event) {
+    event.stopPropagation();
     const { onCancel } = this.props;
-    onCancel();
+    onCancel(event);
   }
 
-  save() {
+  save(event) {
     const { onSave } = this.props,
       {
         name,
@@ -70,8 +72,11 @@ class ModalCreate extends Component {
     const { isEmpty } = this.state;
 
     return (
-      <div className="modal modal-create">
+      <div className="modal" onClick={this.cancel}>
         <div className="modal-content">
+          <div className="modal-header">
+            <div className="modal-title">New contact</div>
+          </div>
           <form className="modal-form">
             <label className="modal-label">
               Name
@@ -108,11 +113,11 @@ class ModalCreate extends Component {
                 onChange={this.handleInputChange}>
               </textarea>
             </label>
-            <div className="modal-content__confirm-buttons">
-              <button type="button" onClick={this.cancel}>Cancel</button>
-              <button type="button" disabled={isEmpty} onClick={this.save}>Save</button>
-            </div>
           </form>
+          <div className="modal-content__confirm-buttons">
+            <button className="modal-button" type="button">Cancel</button>
+            <button className="modal-button" type="button" disabled={isEmpty} onClick={this.save}>Save</button>
+          </div>
         </div>
       </div>
     );

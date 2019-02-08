@@ -28,14 +28,14 @@ class Filter extends Component {
   render() {
     const { value } = this.state;
     return (
-      <div className="Filter-panel">
+      <div className="filter-panel">
         <input
           type="text"
           value={value}
           onChange={this.changeValue}
           placeholder="Search..."
         />
-        <button onClick={this.buttonClick}>Найти</button>
+        <button onClick={this.buttonClick}>Search</button>
       </div>
     )
   }

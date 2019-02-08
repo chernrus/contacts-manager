@@ -1,10 +1,10 @@
-// http://www.filltext.com/?rows=10&name={firstName}~{lastName}&phone={phone|format}&id={number|1000}}&email={email}&description={lorem|6}&pretty=true
-
 import React, { Component } from 'react';
-import '../App.css';
+import '../styles/App.css';
 import ModalCreate from './ModalCreate';
 import ContactsList from './ContactsList';
 import Filter from './Filter';
+
+// generate test data link http://www.filltext.com/?rows=10&name={firstName}~{lastName}&phone={phone|format}&id={number|1000}}&email={email}&description={lorem|6}&pretty=true
 
 class App extends Component {
 
@@ -13,7 +13,6 @@ class App extends Component {
 
     this.state = {
       contacts: this.getData() || [],
-      error: null,
       createModalShow: false,
       sortField: 'name',
       filter: ''
@@ -44,8 +43,7 @@ class App extends Component {
         if (a[sortField] > b[sortField]) return 1;
         return 0;
       });
-    console.log(sortField);
-    console.log(sortedData);
+
     return sortedData;
   }
 
@@ -67,8 +65,6 @@ class App extends Component {
   }
 
   setData(contacts) {
-    console.log(contacts);
-    console.log(contacts);
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }
 
@@ -86,8 +82,6 @@ class App extends Component {
   }
 
   editContact(contact) {
-    console.log(contact);
-
     let contacts = this.state.contacts,
       foundIndex = contacts.findIndex(x => x.id === contact.id);
 
@@ -112,33 +106,36 @@ class App extends Component {
     });
   }
 
-  showCreateModal() {
+  showCreateModal(event) {
+    // event.preventDefault();
     this.setState({createModalShow: true});
+
   }
 
-  hideCreateModal() {
-    this.setState({createModalShow: false});
+  hideCreateModal(event) {
+    if(event.target.className === 'modal' || event.target.className === 'modal-button') {
+      this.setState({createModalShow: false});
+    }
   }
 
   render() {
-    console.log('Start');
     const {
         contacts,
-        error,
         createModalShow
       } = this.state,
       filteredContacts = contacts.filter(dataItem => {
         return Object.values(dataItem).toString().toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1;
       });
 
-
     return (
       <div className="App">
-        <h1>Contacts Manager</h1>
-        <Filter onFilterChange={this.onFilterChange} />
-        <div className="contact-creator">
-          <button onClick={this.showCreateModal}>New contact</button>
-          {createModalShow && <ModalCreate onSave={this.saveContact} onCancel={this.hideCreateModal}/>}
+        <div className="app-header">
+          <div className="app-header-title">Contacts Manager</div>
+          <div className="contact-creator">
+            <button onClick={this.showCreateModal}>New contact</button>
+            {createModalShow && <ModalCreate onSave={this.saveContact} onCancel={this.hideCreateModal}/>}
+          </div>
+          <Filter onFilterChange={this.onFilterChange} />
         </div>
         {filteredContacts.length !==0 &&
             <ContactsList

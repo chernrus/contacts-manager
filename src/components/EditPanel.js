@@ -19,18 +19,19 @@ class EditPanel extends Component {
     this.hideMenu = this.hideMenu.bind(this);
   }
 
-  showEditModal() {
+  showEditModal(event) {
     this.setState({modalEditShow: true});
   }
 
-  hideEditeModal() {
-    this.setState({modalEditShow: false});
+  hideEditeModal(event) {
+    if(event.target.className === 'modal' || event.target.className === 'modal-button') {
+      this.setState({modalEditShow: false});
+    }
   }
 
   editContact(contact) {
     const { onEdit } = this.props;
     onEdit(contact);
-    this.hideEditeModal();
   }
 
   removeContact() {
@@ -60,11 +61,14 @@ class EditPanel extends Component {
 
     return (
       <div className="edit-panel">
-        <button onClick={this.showEditModal}>Edit</button>
+        <span className="fas fa-pen icon-button" onClick={this.showEditModal}></span>
         <div className="dropdown">
-          <button onClick={this.dropMenu} className="dropdown-button">Menu</button>
+          <span className="fas fa-ellipsis-v icon-button" onClick={this.dropMenu}></span>
           {isDropdown && <div className="dropdown-content">
-            <button onClick={this.removeContact} className="dropdown-button">Delete</button>
+            <div className="dropdown-item" onClick={this.removeContact}>
+              <span className="far fa-trash-alt icon-button"></span>
+              <div className="dropdown-item-text">Remove</div>
+            </div>
           </div>}
         </div>
         {modalEditShow && <ModalEdit contact={ contact }

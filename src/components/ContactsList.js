@@ -11,14 +11,13 @@ class ContactsList extends Component {
           <th>Phone</th>
           <th>Email</th>
           <th>Description</th>
+          <th></th>
         </tr>
       </thead>
     );
   }
 
   createTbody(contacts) {
-    console.log(contacts);
-
     let trows = [];
 
     contacts.forEach((item, i) => {

@@ -42,9 +42,10 @@ class ModalEdit extends Component {
     });
   }
 
-  cancel() {
+  cancel(event) {
+    event.stopPropagation();
     const { onCancel } = this.props;
-    onCancel();
+    onCancel(event);
   }
 
   edit() {
@@ -57,7 +58,6 @@ class ModalEdit extends Component {
         id
       } = this.state;
 
-    console.log(this);
     onEdit({
       name: name || '',
       phone: phone || '',
@@ -71,8 +71,11 @@ class ModalEdit extends Component {
     const { isEmpty } = this.state;
 
     return (
-      <div className="modal modal-edit">
+      <div className="modal" onClick={this.cancel}>
         <div className="modal-content">
+          <div className="modal-header">
+            <div className="modal-title">New contact</div>
+          </div>
           <form className="modal-form">
             <label className="modal-label">
               Name
@@ -109,11 +112,11 @@ class ModalEdit extends Component {
                 onChange={this.handleInputChange}
                 value={this.state.description}/>
             </label>
-            <div className="modal-content__confirm-buttons">
-              <button type="button" onClick={this.cancel}>Cancel</button>
-              <button type="button" disabled={isEmpty} onClick={this.edit}>Edit</button>
-            </div>
           </form>
+          <div className="modal-content__confirm-buttons">
+            <button className="modal-button" type="button">Cancel</button>
+            <button className="modal-button" type="button" disabled={isEmpty} onClick={this.edit}>Edit</button>
+          </div>
         </div>
       </div>
     );
